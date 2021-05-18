@@ -20,7 +20,6 @@ export class RoomsController {
         const roomId = room.id;
         const updatedUserData = this.#updateGlobalUserData(userId, user, roomId);
         const updatedRoom = this.#joinUserRoom(socket, updatedUserData, room);
-        socket.emit(constants.event.USER_CONNECTED, updatedUserData)
         this.#notifyUsersOnRoom(socket, roomId, updatedUserData)
         this.#replyWithActiveUsers(socket, updatedRoom.users )
     }
