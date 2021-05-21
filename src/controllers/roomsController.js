@@ -19,6 +19,36 @@ export class RoomsController {
             notify: (rooms)=> this.notifyRoomSubscribers(rooms)
         }
     }
+    speakRequest(socket){
+        const userId = socket.id;
+        const user = this.#users.get(userId)
+        const roomId = user.roomId
+        const owner = this.rooms.get(roomId)?.owner
+        if(!owner) return;
+        console.log("solicitou")
+        console.log(user)
+        socket.to(owner.id).emit(constants.event.SPEAK_REQUEST, user)
+    }
+
+    speakAnswer(socket, {answer, user}){
+         const currentUser = this.#users.get(user.id)
+         const updatedUser = new Attendee({
+             ...currentUser,
+             isSpeaker: answer
+         })
+         this.#users.set(user.id, updatedUser)
+         const roomId = user.roomId
+         const room = this.rooms.get(roomId)
+         const userOnRoom = [...room.users.values()].find(({id})=> id === user.id)
+         room.users.delete(userOnRoom)
+         room.users.add(updatedUser)
+         this.rooms.set(roomId, room)
+
+         //informa ele mesmo
+         socket.emit(constants.event.UPGRADE_USER_PERMISSION, updatedUser)
+         //notifica a sala inteira para ligar para esse novo speaker
+         this.#notifyUserProfileUpgrade(socket, roomId, updatedUser)
+    }
 
     notifyRoomSubscribers(rooms){
         const event = constants.event.LOBBY_UPDATED;
@@ -27,7 +57,6 @@ export class RoomsController {
 
     onNewConnection(socket){
         const {id} = socket;
-        console.log('connection stablished with', id)
         this.#updateGlobalUserData(id)
     }
 
@@ -51,7 +80,6 @@ export class RoomsController {
     }
 
     disconnect(socket){
-        console.log("disconnect", socket.id)
         this.#logoutUser(socket)
     }
 

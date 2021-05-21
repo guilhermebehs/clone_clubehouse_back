@@ -8,7 +8,6 @@ export class LobbyController {
 
     onNewConnection(socket){
         const {id} = socket;
-        console.log('Lobby connection is stablished with', id)
         this.#updateLobbyRooms(socket, [...this.activeRooms.values()])
         this.#activateEventProxy(socket)
     }
