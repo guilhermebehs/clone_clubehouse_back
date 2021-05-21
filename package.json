@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": "16"
+  },
   "scripts": {
     "start": "node src",
     "dev": "npx nodemon src"
