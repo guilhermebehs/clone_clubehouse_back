@@ -8,7 +8,7 @@
     "node": "16"
   },
   "scripts": {
-    "start": "node src",
+    "start": "node src/index.js",
     "dev": "npx nodemon src"
   },
   "keywords": [],
