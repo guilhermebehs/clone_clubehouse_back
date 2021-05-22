@@ -25,7 +25,6 @@ export class RoomsController {
         const roomId = user.roomId
         const owner = this.rooms.get(roomId)?.owner
         if(!owner) return;
-        console.log("solicitou")
         console.log(user)
         socket.to(owner.id).emit(constants.event.SPEAK_REQUEST, user)
     }

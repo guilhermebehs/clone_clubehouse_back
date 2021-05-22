@@ -1,13 +1,15 @@
-import { Attendee } from "./attendee.js"
+import { Attendee } from './attendee.js';
 
-export class Room{
-    constructor({id, topic, attendeesCount, speakersCount, featuredAttendees, owner, users}){
-        this.id = id
-        this.topic = topic
-        this.attendeesCount = attendeesCount
-        this.speakersCount = speakersCount
-        this.featuredAttendees = featuredAttendees?.map(a => new Attendee(a))
-        this.owner = new Attendee(owner)
-        this.users = users
-    }
+export class Room {
+  constructor({
+    id, topic, attendeesCount, speakersCount, featuredAttendees, owner, users,
+  }) {
+    this.id = id;
+    this.topic = topic;
+    this.attendeesCount = attendeesCount;
+    this.speakersCount = speakersCount;
+    this.featuredAttendees = featuredAttendees?.map((a) => new Attendee(a));
+    this.owner = new Attendee(owner);
+    this.users = users;
+  }
 }
